@@ -61,12 +61,25 @@ public class TileTests
 	public void CompareTilesIsCorrect(
 		Tile tileA, Tile? tileB, int expectedComparisonValue, string extraBecauseContext = "")
 	{
+		PrepareExtraBecauseContext(ref extraBecauseContext);
+		tileA.CompareTo(tileB).Should()
+			.Be(expectedComparisonValue, $"tile comparison should be correct{extraBecauseContext}");
+	}
+
+	[TestCaseSource(nameof(ToTilesTestCases))]
+	public void ToTilesIsCorrect(string input, List<Tile> expectedOutput, string extraBecauseContext = "")
+	{
+		var actualOutput = input.ToTiles().ToList();
+		PrepareExtraBecauseContext(ref extraBecauseContext);
+		actualOutput.Should().Equal(expectedOutput, $"parsing to tiles should be correct{extraBecauseContext}");
+	}
+
+	private static void PrepareExtraBecauseContext(ref string extraBecauseContext)
+	{
 		if (!string.IsNullOrWhiteSpace(extraBecauseContext) && !extraBecauseContext.StartsWith(" "))
 		{
 			extraBecauseContext = $" {extraBecauseContext}";
 		}
-		tileA.CompareTo(tileB).Should()
-			.Be(expectedComparisonValue, $"tile comparison should be correct{extraBecauseContext}");
 	}
 
 	private static IEnumerable<object> CompareTileTestCases()
@@ -189,6 +202,84 @@ public class TileTests
 			new Tile(Suit.Man, 2),
 			1,
 			"when comparing 7 to 2"
+		};
+	}
+
+	private static IEnumerable<object> ToTilesTestCases()
+	{
+		yield return new object[]
+		{
+			"1p",
+			new List<Tile> {
+				new Tile(Suit.Pin, 1)
+			},
+			"when provided single number tile"
+		};
+		yield return new object[]
+		{
+			"4z",
+			new List<Tile> {
+				new Tile(Suit.Zi, 4)
+			},
+			"when provided single honor tile"
+		};
+		yield return new object[]
+		{
+			"123p",
+			new List<Tile> {
+				new Tile(Suit.Pin, 1),
+				new Tile(Suit.Pin, 2),
+				new Tile(Suit.Pin, 3)
+			},
+			"when provided multiple tiles in one suit"
+		};
+		yield return new object[]
+		{
+			"729p",
+			new List<Tile> {
+				new Tile(Suit.Pin, 7),
+				new Tile(Suit.Pin, 2),
+				new Tile(Suit.Pin, 9)
+			},
+			"when keeping order and provided multiple tiles in one suit"
+		};
+		yield return new object[]
+		{
+			"0555p",
+			new List<Tile> {
+				new Tile(Suit.Pin, 0),
+				new Tile(Suit.Pin, 5),
+				new Tile(Suit.Pin, 5),
+				new Tile(Suit.Pin, 5)
+			},
+			"when provided with kong of 5s (one red 5)"
+		};
+		yield return new object[]
+		{
+			"123p3z5m",
+			new List<Tile> {
+				new Tile(Suit.Pin, 1),
+				new Tile(Suit.Pin, 2),
+				new Tile(Suit.Pin, 3),
+				new Tile(Suit.Zi, 3),
+				new Tile(Suit.Man, 5)
+			},
+			"when provided multiple suits of tiles, some with single tiles"
+		};
+		yield return new object[]
+		{
+			"123p333z45m",
+			new List<Tile> {
+				new Tile(Suit.Pin, 1),
+				new Tile(Suit.Pin, 2),
+				new Tile(Suit.Pin, 3),
+				new Tile(Suit.Zi, 3),
+				new Tile(Suit.Zi, 3),
+				new Tile(Suit.Zi, 3),
+				new Tile(Suit.Man, 4),
+				new Tile(Suit.Man, 5)
+			},
+			"when provided multiple suits of tiles, all with multiple tiles"
 		};
 	}
 }
