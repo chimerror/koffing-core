@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Koffing;
@@ -43,5 +44,49 @@ public static class Extensions
 			}
 		}
 		yield break;
+	}
+
+	public static string NotationFromTiles(this IEnumerable<Tile> input)
+	{
+		var builder = new StringBuilder();
+		var tiles = input.ToList();
+		if (tiles.Count > 0)
+		{
+			var currentSuit = tiles[0].Suit;
+			foreach (var tile in tiles)
+			{
+				if (tile.Suit != currentSuit)
+				{
+					AppendSuit(currentSuit, builder);
+					currentSuit = tile.Suit;
+				}
+				builder.Append(tile.Rank);
+			}
+			AppendSuit(currentSuit, builder);
+		}
+
+		return builder.ToString();
+	}
+
+	private static void AppendSuit(Suit suit, StringBuilder builder)
+	{
+		switch (suit)
+		{
+			case Suit.Man:
+				builder.Append("m");
+				break;
+
+			case Suit.Pin:
+				builder.Append("p");
+				break;
+
+			case Suit.Sou:
+				builder.Append("s");
+				break;
+
+			case Suit.Zi:
+				builder.Append("z");
+				break;
+		}
 	}
 }

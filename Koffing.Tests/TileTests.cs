@@ -66,12 +66,15 @@ public class TileTests
 			.Be(expectedComparisonValue, $"tile comparison should be correct{extraBecauseContext}");
 	}
 
-	[TestCaseSource(nameof(ToTilesTestCases))]
-	public void ToTilesIsCorrect(string input, List<Tile> expectedOutput, string extraBecauseContext = "")
+	[TestCaseSource(nameof(TileNotationTestCases))]
+	public void ToTilesAndNotationFromTilesAreCorrect(string notation, List<Tile> tiles, string extraBecauseContext = "")
 	{
-		var actualOutput = input.ToTiles().ToList();
+		var actualToTilesOutput = notation.ToTiles().ToList();
+		var actualNotationFromTilesOutput = tiles.NotationFromTiles();
 		PrepareExtraBecauseContext(ref extraBecauseContext);
-		actualOutput.Should().Equal(expectedOutput, $"parsing to tiles should be correct{extraBecauseContext}");
+		actualToTilesOutput.Should().Equal(tiles, $"parsing to tiles should be correct{extraBecauseContext}");
+		actualNotationFromTilesOutput
+			.Should().Be(notation, $"generating notation from tiles should be correct{extraBecauseContext}");
 	}
 
 	private static void PrepareExtraBecauseContext(ref string extraBecauseContext)
@@ -205,7 +208,7 @@ public class TileTests
 		};
 	}
 
-	private static IEnumerable<object> ToTilesTestCases()
+	private static IEnumerable<object> TileNotationTestCases()
 	{
 		yield return new object[]
 		{
