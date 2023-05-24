@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Koffing.Tests", "Koffing.Tests\Koffing.Tests.csproj", "{797197D5-E7BE-44AF-A91D-FCD452E2AD8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Koffing", "Koffing\Koffing.csproj", "{E2050C21-D872-450A-A392-78CAC5BF1767}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{797197D5-E7BE-44AF-A91D-FCD452E2AD8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{797197D5-E7BE-44AF-A91D-FCD452E2AD8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{797197D5-E7BE-44AF-A91D-FCD452E2AD8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{797197D5-E7BE-44AF-A91D-FCD452E2AD8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2050C21-D872-450A-A392-78CAC5BF1767}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2050C21-D872-450A-A392-78CAC5BF1767}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2050C21-D872-450A-A392-78CAC5BF1767}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2050C21-D872-450A-A392-78CAC5BF1767}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
