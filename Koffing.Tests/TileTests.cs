@@ -1,6 +1,3 @@
-using Koffing;
-using FluentAssertions;
-
 namespace Koffing.Tests;
 
 public class TileTests
@@ -62,8 +59,8 @@ public class TileTests
 		Tile tileA, Tile? tileB, int expectedComparisonValue, string extraBecauseContext = "")
 	{
 		PrepareExtraBecauseContext(ref extraBecauseContext);
-		tileA.CompareTo(tileB).Should()
-			.Be(expectedComparisonValue, $"tile comparison should be correct{extraBecauseContext}");
+		tileA.CompareTo(tileB)
+			.Should().Be(expectedComparisonValue, $"tile comparison should be correct{extraBecauseContext}");
 	}
 
 	[TestCaseSource(nameof(TileNotationTestCases))]
@@ -75,14 +72,6 @@ public class TileTests
 		actualToTilesOutput.Should().Equal(tiles, $"parsing to tiles should be correct{extraBecauseContext}");
 		actualNotationFromTilesOutput
 			.Should().Be(notation, $"generating notation from tiles should be correct{extraBecauseContext}");
-	}
-
-	private static void PrepareExtraBecauseContext(ref string extraBecauseContext)
-	{
-		if (!string.IsNullOrWhiteSpace(extraBecauseContext) && !extraBecauseContext.StartsWith(" "))
-		{
-			extraBecauseContext = $" {extraBecauseContext}";
-		}
 	}
 
 	private static IEnumerable<object> CompareTileTestCases()
