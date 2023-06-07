@@ -37,6 +37,21 @@ public class BlockTests
 			.Should().BeEquivalentTo(expectedOutput, $"attempting kongs should be correct{extraBecauseContext}");
 	}
 
+	[TestCaseSource(nameof(AttemptChowTestCases))]
+	public void AttemptChowIsCorrect(
+		Tile tile,
+		IEnumerable<Tile> otherTiles,
+		bool expectedSuccess,
+		List<List<Block>> expectedOutput,
+		string extraBecauseContext = "")
+	{
+		var actualSuccess = Chow.AttemptWith(tile, otherTiles, out var actualOutput);
+		actualSuccess
+			.Should().Be(expectedSuccess, $"attempting chows should return correct success value{extraBecauseContext}");
+		actualOutput
+			.Should().BeEquivalentTo(expectedOutput, $"attempting chows should be correct{extraBecauseContext}");
+	}
+
 	private static IEnumerable<object> AttemptKongTestCases()
 	{
 		yield return new object[]
@@ -263,6 +278,93 @@ public class BlockTests
 				},
 			},
 			"when given non-red five and there are more than enough matching tiles with a red five"
+		};
+	}
+
+	private static IEnumerable<object> AttemptChowTestCases()
+	{
+		yield return new object[]
+		{
+			new Tile(Suit.Zi, 5),
+			"2p3s11m34z".ToTiles(),
+			false,
+			new List<List<Block>> {
+				new List<Block> {
+					new UnsortedTiles("2p3s11m345z".ToTiles())
+				}
+			},
+			"when given an honor tile"
+		};
+		yield return new object[]
+		{
+			new Tile(Suit.Pin, 7),
+			"46p3s1134z".ToTiles(),
+			false,
+			new List<List<Block>> {
+				new List<Block> {
+					new UnsortedTiles("46p3s1134z7p".ToTiles())
+				}
+			},
+			"when only one relevant tile is available"
+		};
+		yield return new object[]
+		{
+			new Tile(Suit.Man, 3),
+			"1245m".ToTiles(),
+			true,
+			new List<List<Block>> {
+				new List<Block> {
+					new Chow("123m".ToTiles()),
+					new UnsortedTiles("45m".ToTiles())
+				},
+				new List<Block> {
+					new Chow("234m".ToTiles()),
+					new UnsortedTiles("15m".ToTiles())
+				},
+				new List<Block> {
+					new Chow("345m".ToTiles()),
+					new UnsortedTiles("12m".ToTiles())
+				},
+			},
+			"when there are multiple possible chows with no five tiles"
+		};
+		yield return new object[]
+		{
+			new Tile(Suit.Sou, 4),
+			"34067s".ToTiles(),
+			true,
+			new List<List<Block>> {
+				new List<Block> {
+					new Chow("340s".ToTiles()),
+					new UnsortedTiles("467s".ToTiles())
+				},
+				new List<Block> {
+					new Chow("406s".ToTiles()),
+					new UnsortedTiles("347s".ToTiles())
+				},
+			},
+			"when multiple chows can be made with a red five from the other tiles"
+		};
+		yield return new object[]
+		{
+			new Tile(Suit.Pin, 0),
+			"34567p".ToTiles(),
+			true,
+			new List<List<Block>> {
+				new List<Block> {
+					new Chow("340p".ToTiles()),
+					new UnsortedTiles("567p".ToTiles())
+				},
+				new List<Block> {
+					new Chow("406p".ToTiles()),
+					new UnsortedTiles("357p".ToTiles())
+				},
+				new List<Block> {
+					new Chow("067p".ToTiles()),
+					new UnsortedTiles("345p".ToTiles())
+				},
+			},
+			"when multiple chows can be made with a chosen red five"
 		};
 	}
 }
